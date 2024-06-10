@@ -1,10 +1,10 @@
-
+import './layout.scss'
 
 function App() {
  
   return (
-    <div>
-      
+    <div className="layout">
+      Hello
     </div>
   )
 }
