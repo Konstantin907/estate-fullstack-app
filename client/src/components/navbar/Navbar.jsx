@@ -1,14 +1,17 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import './navbar.scss'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext';
 
 
 export default function Navbar() {
 
   const [open, setOpen]= useState(false);
-  const user = false;
 
-  return (
+  const {currentUser} = useContext(AuthContext);
+
+
+  return ( 
     <nav>
       <div className="left">
         <Link href="/" className='logo'>
@@ -21,19 +24,19 @@ export default function Navbar() {
         <Link href="">Agents</Link>
       </div>
         <div className="right">
-        {user? 
+        {currentUser ? 
           (<div className='user'>
-            <img src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
-            <span>Joe Doe</span>
-            <Link to={'/profile'}>
-              <div className="notification">
-                3
-              </div>
+            <img src={currentUser.avatar || 'noavatar.png'} alt="" />
+            <span>{currentUser.username}</span>
+            <Link to="/profile" className="profile">
+              <div className="notification">3</div>
               <span>Profile</span>
             </Link>
           </div>) : 
-            (<><a href="">Sign in</a>
-        <a href="" className='register'>Sign up</a></>)}
+            (<>
+              <Link to="/login" className='login'>Sign in</Link>
+              <Link to="/register" className='register'>Sign up</Link>
+        </>)}
           <div className="menuIcon">
             <img 
               src="/menu.png" 
@@ -46,8 +49,8 @@ export default function Navbar() {
             <Link href="">About</Link>
             <Link href="">Contact</Link>
             <Link href="">Agents</Link>
-            <Link href="">Sign in</Link>
-            <Link href="">Sign up</Link>
+            <Link to="/login">Sign in</Link>
+            <Link to='/register'>Sign up</Link>
           </div> 
         </div>
     </nav>

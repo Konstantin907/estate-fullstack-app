@@ -1,18 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "./homePage.scss"
 import SearchBar from '../../components/searchBar/SearchBar'
+import { AuthContext } from '../../context/AuthContext'
 
 const HomePage = () => {
+
+  const {currentUser} = useContext(AuthContext);
+
+  console.log(currentUser);
+
   return (
     <div className="homePage">
     <div className="textContainer">
       <div className="wrapper">
         <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-          explicabo suscipit cum eius, iure est nulla animi consequatur
-          facilis id pariatur fugit quos laudantium temporibus dolor ea
-          repellat provident impedit!
+          Welcome to our real estate world. Everything you need, rent, sell or looking
+          for a quick run off from town, you are on the right place. We are here
+          to give you the best experience possible! All your needs are here.
         </p>
         <SearchBar />
         <div className="boxes">
