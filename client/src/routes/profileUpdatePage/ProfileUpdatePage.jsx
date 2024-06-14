@@ -3,12 +3,14 @@ import './profileUpdated.scss'
 import { AuthContext } from '../../context/AuthContext'
 import apiRequest  from '../../lib/apiRequest.js'
 import { useNavigate } from "react-router-dom";
+import UploadWidget from '../../components/uploadWidget/UploadWidget.jsx';
 
 const ProfileUpdatePage = () => {
+  const {currentUser, updateUser} = useContext(AuthContext);
 
   const [error, setError] = useState('');
+  const [avatar, setAvatar] = useState(currentUser.avatar);
 
-  const {currentUser, updateUser} = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -20,10 +22,10 @@ const ProfileUpdatePage = () => {
     const username = formData.get('username');
     const email = formData.get('email');
     const password = formData.get('password');
-
+ 
     try {
       const res = await apiRequest.put(`/users/${currentUser.id}`,{
-        username, email, password
+        username, email, password, avatar
       });
       updateUser(res.data);
       navigate("/profile");
@@ -66,8 +68,17 @@ const ProfileUpdatePage = () => {
       </form>
     </div>
     <div className="sideContainer">
-      <img src={currentUser.avatar || '/noavatar.png'} alt="" className="avatar" />
-      
+      <img src={avatar || '/noavatar.png'} alt="" className="avatar" />
+      <UploadWidget 
+        uwConfig={{
+          cloudName: "dghpecqyn",
+          uploadPreset: "estate",
+          multiple: false,
+          maxImageFileSize: 2000000,
+          folder: "avatars"
+        }}
+        setAvatar={setAvatar}
+      />
     </div>
   </div>
   )
