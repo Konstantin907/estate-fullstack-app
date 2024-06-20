@@ -10,7 +10,7 @@ import Register from './routes/register/Register';
 import Profile from './routes/profile/Profile';
 import ProfileUpdatePage from './routes/profileUpdatePage/ProfileUpdatePage';
 import NewPostPage from './routes/newPostPage/newPostPage';
-import { singlePageLoader } from './lib/loaders';
+import { listPageLoader, singlePageLoader } from './lib/loaders';
 
 function App() {
 
@@ -25,7 +25,8 @@ function App() {
         },
         {
           path:"/list",
-          element:<ListPage/>
+          element:<ListPage/>,
+          loader: listPageLoader,
         },
         {
           path:"/:id",
