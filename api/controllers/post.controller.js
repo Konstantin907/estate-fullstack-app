@@ -16,9 +16,11 @@ export const getPosts = async (req, res) => {
             lte: parseInt(query.maxPrice) || undefined,
           },
         },
-      });
-  
-      res.status(200).json(posts);
+      }); 
+       
+            res.status(200).json(posts);
+       
+      
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: 'Failed to get posts' });
