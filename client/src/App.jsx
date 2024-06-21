@@ -10,7 +10,7 @@ import Register from './routes/register/Register';
 import Profile from './routes/profile/Profile';
 import ProfileUpdatePage from './routes/profileUpdatePage/ProfileUpdatePage';
 import NewPostPage from './routes/newPostPage/newPostPage';
-import { listPageLoader, singlePageLoader } from './lib/loaders';
+import { listPageLoader, profilePageLoader, singlePageLoader } from './lib/loaders';
 
 function App() {
 
@@ -48,7 +48,8 @@ function App() {
         children:[
           {
             path:"/profile",
-            element:<Profile />
+            element:<Profile />,
+            loader: profilePageLoader,
           },
           {
             path:'/profile/update',
