@@ -1,14 +1,35 @@
-import React from 'react'
-import './singlePage.scss'
+import "./singlePage.scss";
+import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
-import { singlePostData, userData } from '../../lib/dummyData.js'
-import Slider from '../../components/slider/Slider';
-import { useLoaderData } from 'react-router-dom';
-import DOMPurify from 'dompurify';
+import { useNavigate, useLoaderData } from "react-router-dom";
+import DOMPurify from "dompurify";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
 
-const SinglePage = () => {
-
+function SinglePage() {
   const post = useLoaderData();
+  const [saved, setSaved] = useState(post.isSaved);
+  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSave = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
+    
+    setSaved((prev) => !prev);
+
+    try {
+      await apiRequest.post("/users/save", { postId: post.id });
+    } catch (err) {
+      console.log(err);
+      
+      setSaved((prev) => !prev);
+    }
+  };
 
   return (
     <div className="singlePage">
@@ -20,13 +41,13 @@ const SinglePage = () => {
               <div className="post">
                 <h1>{post.title}</h1>
                 <div className="address">
-                  <img src="/pin.png" alt="" />
+                  <img src="/pin.png" alt="Location Pin" />
                   <span>{post.address}</span>
                 </div>
                 <div className="price">$ {post.price}</div>
               </div>
               <div className="user">
-                <img src={post.user.avatar} alt="" />
+                <img src={post.user.avatar} alt="User Avatar" />
                 <span>{post.user.username}</span>
               </div>
             </div>
@@ -44,32 +65,23 @@ const SinglePage = () => {
           <p className="title">General</p>
           <div className="listVertical">
             <div className="feature">
-              <img src="/utility.png" alt="" />
+              <img src="/utility.png" alt="Utility Icon" />
               <div className="featureText">
                 <span>Utilities</span>
-                {
-                  post.postDetail.utilities === 'owner' ?
-                  <p>Owner is responsible</p> : 
-                  <p>Tenant is responsible</p>
-                }
-                
+                <p>{post.postDetail.utilities === "owner" ? "Owner is responsible" : "Tenant is responsible"}</p>
               </div>
             </div>
             <div className="feature">
-              <img src="/pet.png" alt="" />
+              <img src="/pet.png" alt="Pet Icon" />
               <div className="featureText">
                 <span>Pet Policy</span>
-                {
-                  post.postDetail.pet === "allowed" ? 
-                  <p>Pet Friendly</p> :
-                  <p>Not pet friendly</p>
-                }
+                <p>{post.postDetail.pet === "allowed" ? "Pets Allowed" : "Pets not Allowed"}</p>
               </div>
             </div>
             <div className="feature">
-              <img src="/fee.png" alt="" />
+              <img src="/fee.png" alt="Fee Icon" />
               <div className="featureText">
-                <span>Property Fees</span>
+                <span>Income Policy</span>
                 <p>{post.postDetail.income}</p>
               </div>
             </div>
@@ -77,36 +89,39 @@ const SinglePage = () => {
           <p className="title">Sizes</p>
           <div className="sizes">
             <div className="size">
-              <img src="/size.png" alt="" />
-              <span>{post.postDetail.size}</span>
+              <img src="/size.png" alt="Size Icon" />
+              <span>{post.postDetail.size} sqft</span>
             </div>
             <div className="size">
-              <img src="/bed.png" alt="" />
-              <span>{post.bedroom}</span>
+              <img src="/bed.png" alt="Bed Icon" />
+              <span>{post.bedroom} beds</span>
             </div>
             <div className="size">
-              <img src="/bath.png" alt="" />
-              <span>{post.bathroom}</span>
+              <img src="/bath.png" alt="Bath Icon" />
+              <span>{post.bathroom} bathrooms</span>
             </div>
           </div>
           <p className="title">Nearby Places</p>
           <div className="listHorizontal">
             <div className="feature">
-              <img src="/school.png" alt="" />
+              <img src="/school.png" alt="School Icon" />
               <div className="featureText">
-                <span>{post.postDetail.school > 999 ? post.postDetail.school/1000 + "km" : post.postDetail.school + "m"} away</span>
+                <span>School</span>
+                <p>{post.postDetail.school > 999 ? (post.postDetail.school / 1000 + "km") : (post.postDetail.school + "m")} away</p>
               </div>
             </div>
             <div className="feature">
-              <img src="/pet.png" alt="" />
+              <img src="/pet.png" alt="Bus Icon" />
               <div className="featureText">
-                <span>{post.postDetail.bus}</span>
+                <span>Bus Stop</span>
+                <p>{post.postDetail.bus}m away</p>
               </div>
             </div>
             <div className="feature">
-              <img src="/fee.png" alt="" />
+              <img src="/fee.png" alt="Restaurant Icon" />
               <div className="featureText">
-                <span>{post.postDetail.restaurant}</span>
+                <span>Restaurant</span>
+                <p>{post.postDetail.restaurant}m away</p>
               </div>
             </div>
           </div>
@@ -116,18 +131,23 @@ const SinglePage = () => {
           </div>
           <div className="buttons">
             <button>
-              <img src="/chat.png" alt="" />
+              <img src="/chat.png" alt="Chat Icon" />
               Send a Message
             </button>
-            <button>
-              <img src="/save.png" alt="" />
-              Save the Place
+            <button
+              onClick={handleSave}
+              style={{
+                backgroundColor: saved ? "#fece51" : "white",
+              }}
+            >
+              <img src="/save.png" alt="Save Icon" />
+              {saved ? "Place Saved" : "Save the Place"}
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SinglePage
+export default SinglePage;

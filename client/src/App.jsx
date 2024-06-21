@@ -21,16 +21,16 @@ function App() {
       children:[
         {
           path:"/",
-          element:<HomePage/>
+          element:<HomePage />
         },
         {
           path:"/list",
-          element:<ListPage/>,
+          element:<ListPage />,
           loader: listPageLoader,
         },
         {
           path:"/:id",
-          element:<SinglePage/>,
+          element:<SinglePage />,
           loader: singlePageLoader,
         },
         {
