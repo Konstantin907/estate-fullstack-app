@@ -12,7 +12,7 @@ function Register() {
   const navigate = useNavigate();
 
 const handleSubmit = async(e) =>{
-  e.preventDefault();
+  e.preventDefault(); 
   setIsLoading(true);
   setError('')
   const formData = new FormData(e.target); 

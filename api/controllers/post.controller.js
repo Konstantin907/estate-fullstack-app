@@ -94,16 +94,50 @@ export const addPost = async (req, res) => {
       res.status(500).json({ message: "Failed to create post" });
     }
   };
-//updatePost:
-export const updatePost = async(req, res) => {
-    
-    try {
-       
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message: 'Failed to update post!'})
+  
+  
+export const updatePost = async (req, res) => {
+  const id = req.params.id;
+  const tokenUserId = req.userId;
+  const body = req.body;
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id },
+      include: { postDetail: true }
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found!" });
     }
-}
+
+    if (post.userId !== tokenUserId) {
+      return res.status(403).json({ message: "Not Authorized!" });
+    }
+
+    const updatedPost = await prisma.post.update({
+      where: { id },
+      data: {
+        ...body.postData,
+        postDetail: post.postDetail
+          ? {
+              update: body.postDetail,
+            }
+          : {
+              create: body.postDetail,
+            },
+      },
+      include: {
+        postDetail: true,
+      },
+    });
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error("updatePost error:", error);
+    res.status(500).json({ message: "Failed to update post!" });
+  }
+};
 
 //Delete post:
 
@@ -113,12 +147,14 @@ export const deletePost = async(req, res) => {
     try {
         const post = await prisma.post.findUnique({
             where: { id }
+            
         });
 
         if(post.userId !== tokenUserId){
             return res.status(403).json({message: 'Not Authortized!'})
         }
-
+        if (!post) return res.status(404).json({ message: "Post not found" });
+  
         await prisma.post.delete({
             where: { id },
         })

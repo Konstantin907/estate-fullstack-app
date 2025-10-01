@@ -1,11 +1,24 @@
 import { useState } from "react";
-import "./newPostPage.scss";
+import { useRef } from "react";
 import ReactQuill from "react-quill";
+import "./newPostPage.scss";
 import 'react-quill/dist/quill.snow.css';
 
 import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import { useNavigate } from "react-router-dom";
+
+function QuillWrapper({ value, setValue }) {
+  const quillRef = useRef(null);
+  return (
+    <ReactQuill
+      ref={quillRef}
+      theme="snow"
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
 
 function NewPostPage() {
   const [value, setValue] = useState("");
@@ -30,8 +43,8 @@ function NewPostPage() {
           bathroom: parseInt(inputs.bathroom),
           type: inputs.type,
           property: inputs.property,
-          latitude: parseInt(inputs.latitude),
-          longitude: parseInt(inputs.longitude),
+          latitude: parseFloat(inputs.latitude),
+          longitude: parseFloat(inputs.longitude),
           images: images,
         },
         postDetail: {
@@ -72,7 +85,7 @@ function NewPostPage() {
             </div>
             <div className="item description">
               <label htmlFor="desc">Description</label>
-              <ReactQuill theme="snow" onChange={setValue} value={value} />
+              <QuillWrapper value={value} setValue={setValue} />
             </div>
             <div className="item">
               <label htmlFor="city">City</label>

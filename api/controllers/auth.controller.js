@@ -6,9 +6,7 @@ export const register = async(req, res)=>{
     const { username, email, password } = req.body;
 
     try {
-        //hashing pass:
     const hashedPassword = await bcrypt.hash(password, 10);
-    //creating new user and save it to db:
     const newUser = await prisma.user.create({
         data:{
             username,
@@ -27,22 +25,19 @@ export const register = async(req, res)=>{
 }
 
 export const login = async(req, res)=>{
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 try {
-    //if user exist or not:
     const user =await prisma.user.findUnique({
-        where:{username}
+        where:{email}
     });
     if(!user){
         return res.status(401).json({message: 'Invalid credentials!'})
     }
-    //check password:
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if(!isPasswordValid){
         return res.status(401).json({message: 'Invalid credentials!'})
     }
-    //generate token and send it to user:
     const age = 1000 * 60 * 60 * 24 * 7;
     const token = jwt.sign(
         {

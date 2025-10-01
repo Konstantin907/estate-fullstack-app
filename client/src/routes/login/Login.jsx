@@ -18,12 +18,12 @@ function Login() {
     setError('');
     const formData = new FormData(e.target);
 
-    const username = formData.get('username');
+    const email = formData.get('email');
     const password = formData.get('password');
 
     try {
       const res = await apiRequest.post('/auth/login',{
-        username, password,
+        email, password,
       }); 
       updateUser(res.data);
       navigate('/')
@@ -41,7 +41,7 @@ function Login() {
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Welcome back</h1>
-          <input name="username" type="text" placeholder="Username" />
+          <input name="email" type="text" placeholder="Email" />
           <input name="password" required type="password" placeholder="Password" />
           <button disabled={isLoading}>Login</button>
           <Link to="/register">{"Don't"} you have an account?</Link>

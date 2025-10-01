@@ -3,7 +3,7 @@ import prisma from '../lib/prisma.js'
 
 
 export const getChats = async (req, res) => {
-    const token = req.userId
+    const tokenUserId = req.userId
     try {
         const chats = await prisma.chat.findMany({
             where:{
@@ -22,13 +22,11 @@ export const getChats = async (req, res) => {
     }
   };
 
-
-  //
   export const getChat = async (req, res) => {
     const tokenUserId = req.userId;
   
     try {
-            const singleChat = await prisma.chat.findUnique({
+            const singleChat = await prisma.chat.findFirst({
                 where:{
                     id: req.params.id,
                     userIDs:{
