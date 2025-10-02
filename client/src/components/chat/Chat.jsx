@@ -23,6 +23,9 @@ useEffect(() => {
 
       setMessages(messagesRes.data);
       setChat(chatRes.data);
+      console.log(messages);
+            console.log(chat);
+
     } catch (error) {
       console.error(error);
       setError("Failed to load chat");
@@ -48,8 +51,6 @@ const otherUser = chat?.users?.find((u) => u.id !== currentUser?.id);
       setError("Failed to send message");      
     }
   }
-
-  
 
   return (
     <div className="chatModal">

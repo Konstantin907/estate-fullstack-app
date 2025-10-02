@@ -7,13 +7,25 @@ export const getChats = async (req, res) => {
             where:{
                userIDs:{
                 hasSome:[tokenUserId]
-               } 
-            }
+               },
+            },
+            orderBy: { createdAt: "desc" }
+        });
+        const allUserIds = [...new Set(chats.flatMap(c=>c.userIDs))];
+
+        // all users we need both sides: 
+        const users = await prisma.user.findMany({
+          where:{  id: { in: allUserIds } },
+          select: { id: true, username: true, avatar: true, email:true }
         })
-       
-            res.status(200).json(chats);
-       
-      
+
+        // other user in chat:
+        const chatsWithOtherUser = chats.map(chat=>{
+          const otherUser = users.find(u => u.id !== tokenUserId && chat.userIDs.includes(u.id));
+          return { ...chat, otherUser };
+        })
+
+        res.status(200).json(chatsWithOtherUser);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: 'Failed to get chats' });
@@ -69,49 +81,49 @@ export const getChats = async (req, res) => {
   };
 
 
-  export const addChat = async (req, res) => {
-    const tokenUserId = req.userId;
-    const receiverId = req.body.receiverId;
+export const addChat = async (req, res) => {
+  const tokenUserId = req.userId;
+  const receiverId = req.body.receiverId;
 
-    try {
-
-             if (!receiverId) {
-               return res
-                 .status(400)
-                 .json({ message: "receiverId is required" });
-             }
-             if (receiverId === tokenUserId) {
-               return res
-                 .status(400)
-                 .json({ message: "You cannot chat with yourself" });
-             }
-            const existingChat = await prisma.chat.findFirst({
-                where:{
-                    userIDs: { hasEvery: [tokenUserId, receiverId] },
-                }
-            });
-
-                if (existingChat) {
-                  return res.status(200).json(existingChat);
-                }
-            
-            const newChat = await prisma.chat.create({
-                  data: {
-                    userIDs: [tokenUserId, receiverId],
-                    },
-            })
-       
-            res.status(200).json(newChat);
-       
-      
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: 'Failed to get chats' });
+  try {
+    if (!receiverId) {
+      return res.status(400).json({ message: "receiverId is required" });
     }
-  };
+    if (receiverId === tokenUserId) {
+      return res.status(400).json({ message: "You cannot chat with yourself" });
+    }
+    const existingChat = await prisma.chat.findFirst({
+      where: {
+        userIDs: { hasEvery: [tokenUserId, receiverId] },
+      },
+    });
 
+    if (existingChat) {
+      const otherUser = await prisma.user.findUnique({
+        where: { id: receiverId },
+        select: { id: true, username: true, avatar: true, email: true },
+      });
+      return res.status(200).json({ ...existingChat, otherUser });
+    }
+    const newChat = await prisma.chat.create({
+      data: {
+        userIDs: [tokenUserId, receiverId],
+      },
+    });
 
-  //
+    const otherUser = await prisma.user.findUnique({
+      where: { id: receiverId },
+      select: { id: true, username: true, avatar: true, email: true },
+    });
+
+    res.status(200).json({ ...newChat, otherUser });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to create chat" });
+  }
+};
+
   export const readChat = async (req, res) => {
     const tokenUserId = req.userId;
 

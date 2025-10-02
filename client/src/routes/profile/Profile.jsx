@@ -24,6 +24,7 @@ useEffect(()=> {
     try {
       const res = await apiRequest.get("/chats");
       setChats(res.data);
+      
     } catch (error) {
         console.error(error);
     }
@@ -43,88 +44,96 @@ const handleLogout = async() =>{
 
 }
   return (
-          <div className="profilePage">
-          <div className="details">
-            <div className="wrapper">
-              <div className="title">
-                <h1>User Information</h1>
-              <Link to='/profile/update'>
-                <button>Update Profile</button>
-              </Link>
-               
-              </div> 
-              <div className="info">
-                <span>
-                  Avatar:
-                  <img src={currentUser.avatar || '/noavatar.png'} alt="" />
-                </span>
-                <span>
-                  Username: <b>{currentUser.username}</b>
-                </span>
-                <span>
-                  E-mail: <b>{currentUser.email}</b>
-                </span>
-                <button onClick={handleLogout}>Logout</button>
-              </div>
-              <div className="title">
-                <h1>My List</h1>
-                <Link to='/add'>
-                  <button>Create New Post</button>
-                </Link>
-               
-              </div>
-              <Suspense fallback={<p>Loading...</p>}>
-                  <Await
-                    resolve={data.postResponse}
-                    errorElement={<p>Error loading posts!</p>}
-                  >
-                    {(postResponse) =>
-                     <List posts={postResponse.data.userPosts}/>
-                    }
-                  </Await>
-             </Suspense>
-              
-              <div className="title">
-                <h1>Saved List</h1>
-              </div>
-              <Suspense fallback={<p>Loading...</p>}>
-                  <Await
-                    resolve={data.postResponse}
-                    errorElement={<p>Error loading posts!</p>}
-                  >
-                    {(postResponse) =>
-                     <List posts={postResponse.data.savedPosts}/>
-                    }
-                  </Await>
-             </Suspense>
-            </div>
+    <div className="profilePage">
+      <div className="details">
+        <div className="wrapper">
+          <div className="title">
+            <h1>User Information</h1>
+            <Link to="/profile/update">
+              <button>Update Profile</button>
+            </Link>
           </div>
-          {/* CHAT */}
-          <div className="chatContainer">
-            <div className="wrapper">
-                {!selectedChatId ? (
-                  <div>
-                    <h2>Your Chats</h2>
-                    {chats.length === 0 ? (
-                      <p>No chats yet.</p>
-                    ) : (
-                      chats.map((chat) => (
-                        <div
-                          key={chat.id}
-                          onClick={() => setSelectedChatId(chat.id)}
-                          style={{ cursor: "pointer", marginBottom: "8px" }}
-                        >
-                          Chat #{chat.id.substring(0, 6)}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                ) : (
-                  <Chat chatId={selectedChatId} onClose={() => setSelectedChatId(null)} />
-                )}
-            </div>
+          <div className="info">
+            <span>
+              Avatar:
+              <img src={currentUser.avatar || "/noavatar.png"} alt="" />
+            </span>
+            <span>
+              Username: <b>{currentUser.username}</b>
+            </span>
+            <span>
+              E-mail: <b>{currentUser.email}</b>
+            </span>
+            <button onClick={handleLogout}>Logout</button>
           </div>
+          <div className="title">
+            <h1>My List</h1>
+            <Link to="/add">
+              <button>Create New Post</button>
+            </Link>
+          </div>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) => <List posts={postResponse.data.userPosts} />}
+            </Await>
+          </Suspense>
+
+          <div className="title">
+            <h1>Saved List</h1>
+          </div>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) => <List posts={postResponse.data.savedPosts} />}
+            </Await>
+          </Suspense>
         </div>
+      </div>
+      {/* CHAT */}
+      <div className="chatContainer">
+        <div className="wrapper">
+          {!selectedChatId ? (
+            <div>
+              <h2>Your Chats</h2>
+              {chats.length === 0 ? (
+                <p>No chats yet.</p>
+              ) : (
+                chats.map((chat) => (
+                  <div
+                    key={chat.id}
+                    onClick={() => setSelectedChatId(chat.id)}
+                    style={{ cursor: "pointer", marginBottom: "8px" }}
+                  >
+                    <img
+                      src={chat.otherUser?.avatar || "/noavatar.png"}
+                      alt=""
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        marginRight: "8px",
+                      }}
+                    />
+                  <span>{chat.otherUser?.username || chat.otherUser?.email || "User"}</span>
+
+                  </div>
+                ))
+              )}
+            </div>
+          ) : (
+            <Chat
+              chatId={selectedChatId}
+              onClose={() => setSelectedChatId(null)}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
