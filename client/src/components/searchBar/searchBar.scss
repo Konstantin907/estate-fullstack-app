@@ -35,6 +35,19 @@
     height: 64px;
     gap: 5px;
 
+
+    .search-btn{
+      border: none;
+      background-color: transparent;
+    }
+
+    .icon{
+      width: 30px;
+      height: 20px;
+
+    }
+
+
     @include sm {
       flex-direction: column;
       border: none;

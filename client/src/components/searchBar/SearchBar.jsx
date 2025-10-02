@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "./searchBar.scss"
 import { Link } from 'react-router-dom';
+import { FaSearch } from "react-icons/fa";
 
 const types = ['buy', 'rent'];
 
@@ -55,8 +56,8 @@ const SearchBar = () => {
         onChange={handleChange}
       />
       <Link to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}>
-          <button>
-            <img src="/search.png" alt="" />
+          <button className='search-btn'>
+            <FaSearch className='icon'/>
           </button>
       </Link>
       
