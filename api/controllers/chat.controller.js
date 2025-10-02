@@ -35,7 +35,7 @@ export const getChats = async (req, res) => {
                     messages:{
                         orderBy:{
                             createdAt: "asc",
-                        }
+                        },
                     }
                 }
             })
@@ -43,6 +43,11 @@ export const getChats = async (req, res) => {
             if (!singleChat) {
               return res.status(404).json({ message: "Chat not found" });
             }
+
+            const users = await prisma.user.findMany({
+            where: { id: { in: singleChat.userIDs } },
+            select: { id: true, username: true, email: true, avatar: true },
+            });
 
             await prisma.chat.update({
                 where:{
@@ -54,7 +59,7 @@ export const getChats = async (req, res) => {
                     }
                 }
             })
-            res.status(200).json(singleChat);
+        res.status(200).json({ ...singleChat, users });
        
       
     } catch (err) {
@@ -66,12 +71,34 @@ export const getChats = async (req, res) => {
 
   export const addChat = async (req, res) => {
     const tokenUserId = req.userId;
-  
+    const receiverId = req.body.receiverId;
+
     try {
-            const newChat = await prisma.chat.create({
-                data:{
-                    userIDs:[tokenUserId, req.body.receiverId]
+
+             if (!receiverId) {
+               return res
+                 .status(400)
+                 .json({ message: "receiverId is required" });
+             }
+             if (receiverId === tokenUserId) {
+               return res
+                 .status(400)
+                 .json({ message: "You cannot chat with yourself" });
+             }
+            const existingChat = await prisma.chat.findFirst({
+                where:{
+                    userIDs: { hasEvery: [tokenUserId, receiverId] },
                 }
+            });
+
+                if (existingChat) {
+                  return res.status(200).json(existingChat);
+                }
+            
+            const newChat = await prisma.chat.create({
+                  data: {
+                    userIDs: [tokenUserId, receiverId],
+                    },
             })
        
             res.status(200).json(newChat);
@@ -103,6 +130,7 @@ export const getChats = async (req, res) => {
             where: { id: req.params.id },
             data: {
                 seenBy: { push: tokenUserId },
+                seenBy: { set: [...chat.seenBy, tokenUserId] },
             },
             });
             

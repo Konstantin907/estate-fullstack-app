@@ -3,9 +3,10 @@ import List from "../../components/list/List";
 import apiRequest from "../../lib/apiRequest.js";
 import { Await, useLoaderData, useNavigate } from 'react-router-dom';
 import "./profile.scss";
-import { Suspense, useContext } from "react";
+import { Suspense, useContext, useState } from "react";
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom'
+import { useEffect } from "react";
 
 
 function ProfilePage() {
@@ -14,6 +15,21 @@ function ProfilePage() {
   
   const { currentUser, updateUser } = useContext(AuthContext)
 
+  const [selectedChatId, setSelectedChatId] = useState(null);
+  const [chats, setChats] = useState([]);
+
+// chat get:
+useEffect(()=> {
+  const getChats = async() => {
+    try {
+      const res = await apiRequest.get("/chats");
+      setChats(res.data);
+    } catch (error) {
+        console.error(error);
+    }
+  }
+  getChats();
+},[])
 
 const handleLogout = async() =>{
   try {
@@ -26,7 +42,6 @@ const handleLogout = async() =>{
 
 
 }
-console.log(currentUser);
   return (
           <div className="profilePage">
           <div className="details">
@@ -84,9 +99,29 @@ console.log(currentUser);
              </Suspense>
             </div>
           </div>
+          {/* CHAT */}
           <div className="chatContainer">
             <div className="wrapper">
-              <Chat/>
+                {!selectedChatId ? (
+                  <div>
+                    <h2>Your Chats</h2>
+                    {chats.length === 0 ? (
+                      <p>No chats yet.</p>
+                    ) : (
+                      chats.map((chat) => (
+                        <div
+                          key={chat.id}
+                          onClick={() => setSelectedChatId(chat.id)}
+                          style={{ cursor: "pointer", marginBottom: "8px" }}
+                        >
+                          Chat #{chat.id.substring(0, 6)}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                ) : (
+                  <Chat chatId={selectedChatId} onClose={() => setSelectedChatId(null)} />
+                )}
             </div>
           </div>
         </div>

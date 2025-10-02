@@ -6,10 +6,14 @@ import DOMPurify from "dompurify";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
+import Chat from "../../components/chat/Chat";
 
 function SinglePage() {
   const post = useLoaderData();
   const [saved, setSaved] = useState(post.isSaved);
+  const [chatBoxOpen, setChatBoxOpen] = useState(false);
+  const [activeChat, setActiveChat] = useState(null);
+
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -18,10 +22,7 @@ function SinglePage() {
       navigate("/login");
       return;
     }
-
-    
     setSaved((prev) => !prev);
-
     try {
       await apiRequest.post("/users/save", { postId: post.id });
     } catch (err) {
@@ -30,6 +31,22 @@ function SinglePage() {
       setSaved((prev) => !prev);
     }
   };
+
+  // handle chat with renter:
+  const handleChat = async () => {
+    if(!currentUser) {
+      navigate("/login")
+      return;
+    }
+    try {
+        const res = await apiRequest.post("/chats", { receiverId: post.user.id });
+        console.log("Chat opened:", res.data);  
+        setActiveChat(res.data);
+        setChatBoxOpen(true);    
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="singlePage">
@@ -68,14 +85,22 @@ function SinglePage() {
               <img src="/utility.png" alt="Utility Icon" />
               <div className="featureText">
                 <span>Utilities</span>
-                <p>{post.postDetail.utilities === "owner" ? "Owner is responsible" : "Tenant is responsible"}</p>
+                <p>
+                  {post.postDetail.utilities === "owner"
+                    ? "Owner is responsible"
+                    : "Tenant is responsible"}
+                </p>
               </div>
             </div>
             <div className="feature">
               <img src="/pet.png" alt="Pet Icon" />
               <div className="featureText">
                 <span>Pet Policy</span>
-                <p>{post.postDetail.pet === "allowed" ? "Pets Allowed" : "Pets not Allowed"}</p>
+                <p>
+                  {post.postDetail.pet === "allowed"
+                    ? "Pets Allowed"
+                    : "Pets not Allowed"}
+                </p>
               </div>
             </div>
             <div className="feature">
@@ -107,7 +132,12 @@ function SinglePage() {
               <img src="/school.png" alt="School Icon" />
               <div className="featureText">
                 <span>School</span>
-                <p>{post.postDetail.school > 999 ? (post.postDetail.school / 1000 + "km") : (post.postDetail.school + "m")} away</p>
+                <p>
+                  {post.postDetail.school > 999
+                    ? post.postDetail.school / 1000 + "km"
+                    : post.postDetail.school + "m"}{" "}
+                  away
+                </p>
               </div>
             </div>
             <div className="feature">
@@ -130,7 +160,7 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleChat}>
               <img src="/chat.png" alt="Chat Icon" />
               Send a Message
             </button>
@@ -146,6 +176,19 @@ function SinglePage() {
           </div>
         </div>
       </div>
+      {chatBoxOpen && (
+        <div className="chatModal">
+          <div className="chatContent">
+            <button className="closeBtn" onClick={() => setChatBoxOpen(false)}>
+              X
+            </button>
+            <Chat
+              chatId={activeChat.id}
+              onClose={() => setChatBoxOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

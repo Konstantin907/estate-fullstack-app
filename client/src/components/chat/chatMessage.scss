@@ -1,0 +1,155 @@
+.chatModal {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 320px;
+  height: 400px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.chatContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .close {
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+.center {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fafafa;
+
+  .empty {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin-top: 20px;
+  }
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-top: 1px solid #eee;
+  background-color: #fff;
+
+  textarea {
+    flex: 1;
+    resize: none;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    outline: none;
+
+    &:focus {
+      border-color: #fece51;
+    }
+  }
+
+  button {
+    padding: 8px 14px;
+    background: #fece51;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5c13d;
+    }
+  }
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 70%;
+
+  img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .meta {
+      font-size: 11px;
+      color: #666;
+      margin-top: 2px;
+      text-align: right;
+    }
+  }
+
+  &.own {
+    margin-left: auto;
+    flex-direction: row-reverse;
+
+    .bubble {
+      background-color: #fece51;
+      color: #000;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  &.other {
+    .bubble {
+      background-color: #eaeaea;
+      color: #222;
+      border-bottom-left-radius: 4px;
+    }
+  }
+}
