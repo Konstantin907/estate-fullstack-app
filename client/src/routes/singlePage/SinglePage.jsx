@@ -40,7 +40,6 @@ function SinglePage() {
     }
     try {
         const res = await apiRequest.post("/chats", { receiverId: post.user.id });
-        console.log("Chat opened:", res.data);  
         if(!activeChat ||  activeChat.id !== res.data.id) {
           setActiveChat(res.data);
           setChatBoxOpen(true);    

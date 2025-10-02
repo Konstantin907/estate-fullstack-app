@@ -23,9 +23,6 @@ useEffect(() => {
 
       setMessages(messagesRes.data);
       setChat(chatRes.data);
-      console.log(messages);
-            console.log(chat);
-
     } catch (error) {
       console.error(error);
       setError("Failed to load chat");
