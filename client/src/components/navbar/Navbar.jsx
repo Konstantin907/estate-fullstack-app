@@ -1,50 +1,50 @@
-import { useContext, useState } from 'react'
-import './navbar.scss'
-import { Link } from 'react-router-dom'
-import { AuthContext } from '../../context/AuthContext';
+import { useContext, useState } from "react";
+import "./navbar.scss";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 export default function Navbar() {
-
-  const [open, setOpen]= useState(false);
-
-  const {currentUser} = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <nav>
       <div className="left">
         <Link to="/" className="logo">
-          <img src="/logo.png" alt="" />
+          <img src="/logo.png" alt="logo" />
           <span>Stellar</span>
         </Link>
-        <Link to="">Home</Link>
-        <Link to="">About</Link>
-        <Link to="">Contact</Link>
-        <Link to="">Agents</Link>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+        <Link to="/agents">Agents</Link>
       </div>
+
       <div className="right">
         {currentUser ? (
           <div className="user">
-            <img src={currentUser.avatar || "/noavatar.png"} alt="" />
+            <img src={currentUser.avatar || "/noavatar.png"} alt="avatar" />
             <span>{currentUser.username}</span>
             <Link to="/profile" className="profile">
               <button className="profile-btn">Profile</button>
             </Link>
           </div>
         ) : (
-          <>
+          <div className="registration-links">
+            <Link to="/register" className="register">
+              Sign Up
+            </Link>
             <Link to="/login" className="login">
               Sign in
             </Link>
-            <Link to="/register" className="register">
-              Sign up
-            </Link>
-          </>
+          </div>
         )}
+
         <div className="menuIcon" onClick={() => setOpen(!open)}>
           <img src="/menu.png" alt="menu-icon" />
         </div>
+
         <AnimatePresence>
           {open && (
             <motion.div

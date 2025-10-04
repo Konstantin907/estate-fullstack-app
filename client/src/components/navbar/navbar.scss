@@ -5,6 +5,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 5000;
 
   a {
     transition: all 0.4s ease;
@@ -34,65 +36,66 @@ nav {
       img {
         width: 28px;
       }
-
-      span {
-        @include md {
-          display: none;
-        }
-
-        @include sm {
-          display: initial;
-        }
-      }
     }
   }
+
   .right {
     flex: 2;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #fcf5f3;
-    height: 100%;
 
-    @include md {
-      background-color: transparent;
+    .registration-links {
+      display: flex;
+      gap: 15px;
+      z-index: 2;
+
+      a {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .login {
+        border: 1px solid #000;
+        color: black;
+        background: transparent;
+      }
+
+      .register {
+        background: black;
+        color: white;
+      }
     }
 
-    a {
-      padding: 12px 24px;
-      margin: 20px;
-    }
-
-    .user{
+    .user {
       display: flex;
       align-items: center;
       font-weight: bold;
 
-      img{
+      img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
-        margin-right: 20px;
+        margin-right: 15px;
       }
 
-      span{
-        @include sm{
-          display: none;
+      .profile {
+        padding: 8px 18px;
+        background-color: #fece51;
+        border-radius: 5px;
+        cursor: pointer;
+
+        .profile-btn {
+          background: transparent;
+          border: none;
+          font-weight: bold;
+          cursor: pointer;
         }
       }
-
-      .profile{
-        padding: 12px 24px;
-        background-color: #fece51;
-        cursor: pointer;
-        border: none;
-        position: relative;
-      }
-    }
-
-    .register {
-      background-color: #fece51;
     }
 
     .menuIcon {
@@ -110,59 +113,49 @@ nav {
       }
     }
 
-  .menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.95);
-    height: 100vh;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    z-index: 2000;
+    .menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.95);
+      height: 100vh;
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 6000; 
 
-    a {
-      display: block !important;
-      margin: 15px 0;
-      font-weight: 500;
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s ease;
+      a {
+        margin: 15px 0;
+        font-weight: 500;
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
 
-      &:hover {
-        color: #fece51;
+        &:hover {
+          color: #fece51;
+        }
+      }
+
+      .closeBtn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.2);
+          color: #fece51;
+        }
       }
     }
-
-    .closeBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-
-      &:hover {
-        transform: scale(1.2);
-        color: #fece51;
-      }
-    }
-}
-
-
-}
-}
-
-
-.profile-btn{
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
+  }
 }

@@ -1,9 +1,9 @@
 import './register.scss'
 import { Link } from "react-router-dom";
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import apiRequest from '../../lib/apiRequest.js';
+import { motion } from 'framer-motion'
 
 function Register() {
 
@@ -39,7 +39,11 @@ const handleSubmit = async(e) =>{
 
   return (
     <div className="register">
-      <div className="formContainer">
+      <motion.div 
+      className="formContainer"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}>
         <form onSubmit={handleSubmit}>
           <h1>Create an Account</h1>
           <input name="username" type="text" placeholder="Username" />
@@ -47,12 +51,17 @@ const handleSubmit = async(e) =>{
           <input name="password" type="password" placeholder="Password" />
           <button disabled={isLoading}>Register</button>
           <Link to="/login">Do you have an account?</Link>
-        {error && <span>{error }</span>}
+          {error && <span>{error}</span>}
         </form>
-      </div>
-      <div className="imgContainer">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="imgContainer"
+      >
         <img src="/bg.png" alt="" />
-      </div>
+      </motion.div>
     </div>
   );
 }
