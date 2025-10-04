@@ -38,30 +38,36 @@ const handleSubmit = async(e) =>{
 }
 
   return (
-    <div className="register">
-      <motion.div 
-      className="formContainer"
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}>
-        <form onSubmit={handleSubmit}>
-          <h1>Create an Account</h1>
-          <input name="username" type="text" placeholder="Username" />
-          <input name="email" type="text" placeholder="Email" />
-          <input name="password" type="password" placeholder="Password" />
-          <button disabled={isLoading}>Register</button>
-          <Link to="/login">Do you have an account?</Link>
-          {error && <span>{error}</span>}
-        </form>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="imgContainer"
-      >
-        <img src="/bg.png" alt="" />
-      </motion.div>
+  <div className='register-container'>
+   <motion.div 
+      className="form-container"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <p className="title">Create an Account</p>
+      
+      <form className="form" onSubmit={handleSubmit}>
+        <input type="username" name="username" className="input" placeholder="Username" required />
+        <input type="email" name="email" className="input" placeholder="Email" required />
+        <input type="password" name="password" className="input" placeholder="Password" required />
+        
+        <p className="page-link">
+          <span className="page-link-label">Forgot Password?</span>
+        </p>
+
+        <button className="form-btn" disabled={isLoading}>
+          {isLoading ? "Loading..." : "Register"}
+        </button>
+      </form>
+
+      {error && <span className="error-text">{error}</span>}
+
+      <p className="sign-up-label">
+        Already have an account? 
+        <Link to="/login" className="sign-up-link"> Sign in</Link>
+      </p>
+    </motion.div>
     </div>
   );
 }
