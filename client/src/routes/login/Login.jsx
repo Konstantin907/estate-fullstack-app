@@ -3,6 +3,7 @@ import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest.js";
 import { AuthContext } from "../../context/AuthContext.jsx";
+import { motion } from 'framer-motion'
 
 function Login() {
 
@@ -38,19 +39,67 @@ function Login() {
 
   return (
     <div className="login">
-      <div className="formContainer">
-        <form onSubmit={handleSubmit}>
-          <h1>Welcome back</h1>
-          <input name="email" type="text" placeholder="Email" />
-          <input name="password" required type="password" placeholder="Password" />
-          <button disabled={isLoading}>Login</button>
-          <Link to="/register">{"Don't"} you have an account?</Link>
-          {error && <span>{error}</span>}
-        </form>
-      </div>
-      <div className="imgContainer">
-        <img src="/bg.png" alt="" />
-      </div>
+      <motion.div
+        className="formContainer"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.form
+          onSubmit={handleSubmit}
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.h1
+            initial={{ y: -30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Welcome back
+          </motion.h1>
+
+          <motion.input
+            whileFocus={{ scale: 1.03, borderColor: "#0077ff" }}
+            transition={{ type: "spring", stiffness: 250 }}
+            name="email"
+            type="text"
+            placeholder="Email"
+          />
+          <motion.input
+            whileFocus={{ scale: 1.03, borderColor: "#0077ff" }}
+            transition={{ type: "spring", stiffness: 250 }}
+            name="password"
+            required
+            type="password"
+            placeholder="Password"
+          />
+          <motion.button
+            disabled={isLoading}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            {isLoading ? "Loading..." : "Login"}
+          </motion.button>
+          <Link to="/register">{"Don't"} you have an account? Register</Link>
+          {error && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}>{error}</motion.span>}
+        </motion.form>
+      </motion.div>
+
+      <motion.div
+        className="imgContainer"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <motion.img
+          src="/bg.png"
+          alt=""
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        />
+      </motion.div>
     </div>
   );
 }
