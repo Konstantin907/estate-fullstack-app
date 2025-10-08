@@ -7,6 +7,18 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Chat from "../../components/chat/Chat";
+import { motion } from 'framer-motion'
+
+// framer:
+  const fadeIn = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y:0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
+  const slideInRight = {
+    hidden: { opacity: 0, x:50 },
+    visible: { opacity: 1, x:0, transition: { duration: 0.7, ease: "easeIn" } },
+  }
 
 function SinglePage() {
   const post = useLoaderData();
@@ -52,7 +64,13 @@ function SinglePage() {
 
   return (
     <div className="singlePage">
-      <div className="details">
+      <motion.div
+        className="details"
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="wrapper">
           <Slider images={post.images} />
           <div className="info">
@@ -78,8 +96,13 @@ function SinglePage() {
             ></div>
           </div>
         </div>
-      </div>
-      <div className="features">
+      </motion.div>
+      <motion.div 
+      className="features"
+      variants={slideInRight}
+      initial="hidden"
+      animate="visible"
+      >
         <div className="wrapper">
           <p className="title">General</p>
           <div className="listVertical">
@@ -177,7 +200,7 @@ function SinglePage() {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
       {chatBoxOpen && (
         <div className="chatModal">
           <div className="chatContent">

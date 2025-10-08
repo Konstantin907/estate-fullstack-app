@@ -98,7 +98,7 @@ const handleLogout = async() =>{
         </motion.div>
             {/* Saved Posts Section */}
         <div className="savedPosts">
-          <h2>Saved Posts</h2>
+          <h2 className="savedHeading">Saved Posts</h2>
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.postResponse}

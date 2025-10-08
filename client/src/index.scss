@@ -14,3 +14,25 @@ body{
     overflow-y: auto; 
     background-color: #f6eded;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2929;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2929;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6d6a6a transparent;
+}
