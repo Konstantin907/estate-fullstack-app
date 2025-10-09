@@ -57,14 +57,24 @@ const handleLogout = async() =>{
   return (
     <div className="profilePage">
       <div className="userInfo">
-        <motion.div 
-        className="textUser"
-        variants={slideInRight}
-        initial="hidden"
-        animate="visible"
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        <motion.div
+          className="textUser"
+          variants={slideInRight}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          Welcome in, {currentUser.username.charAt(0).toUpperCase() + currentUser.username.slice(1)}!
+          <div className="textHeading">
+           Welcome in,{" "}
+          {currentUser.username.charAt(0).toUpperCase() +
+            currentUser.username.slice(1)}
+          !
+
+           <Link to="/add" className="addNew">
+            <button className="addBtn">New Post</button>
+          </Link>
+          </div>
+
         </motion.div>
         <motion.div
           className="profileCard"
@@ -85,18 +95,19 @@ const handleLogout = async() =>{
                 <p>{currentUser.email}</p>
               </div>
               <div className="imageBtn">
-              <Link to="/profile/update">
-                <button className="updateBtn">Update Profile</button>
-              </Link>
-              <Link>
-                <button onClick={()=>handleLogout()} className="logoutBtn">Logout</button>
-              </Link>
+                <Link to="/profile/update">
+                  <button className="updateBtn">Update Profile</button>
+                </Link>
+                <Link>
+                  <button onClick={() => handleLogout()} className="logoutBtn">
+                    Logout
+                  </button>
+                </Link>
               </div>
-
             </div>
           </div>
         </motion.div>
-            {/* Saved Posts Section */}
+        {/* Saved Posts Section */}
         <div className="savedPosts">
           <h2 className="savedHeading">Saved Posts</h2>
           <Suspense fallback={<p>Loading...</p>}>
@@ -109,12 +120,12 @@ const handleLogout = async() =>{
           </Suspense>
         </div>
       </div>
-      <motion.div 
-          className="chatContainer"
-          variants={slideInRight}
-          initial="hidden"
-          animate="visible"
-          transition={{ duration: 0.8, ease: "easeOut" }}
+      <motion.div
+        className="chatContainer"
+        variants={slideInRight}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="wrapper">
           {!selectedChatId ? (
