@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "./newPostPage.scss";
 import 'react-quill/dist/quill.snow.css';
-
 import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function QuillWrapper({ value, setValue }) {
   const quillRef = useRef(null);
@@ -19,6 +18,15 @@ function QuillWrapper({ value, setValue }) {
     />
   );
 }
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
 
 function NewPostPage() {
   const [value, setValue] = useState("");
@@ -67,8 +75,14 @@ function NewPostPage() {
 
   return (
     <div className="newPostPage">
-      <div className="formContainer">
-        <h1>Add New Post</h1>
+      <motion.div 
+      className="formContainer"
+      variants={fadeIn}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <h1>Add New Post 📝</h1>
         <div className="wrapper">
           <form onSubmit={handleSubmit}>
             <div className="item">
@@ -170,7 +184,7 @@ function NewPostPage() {
             {error && <span>error</span>}
           </form>
         </div>
-      </div>
+      </motion.div>
       <div className="sideContainer">
         {images.map((image, index) => (
           <img src={image} key={index} alt="" />

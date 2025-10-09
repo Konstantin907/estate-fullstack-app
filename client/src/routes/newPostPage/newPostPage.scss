@@ -1,10 +1,14 @@
-.newPostPage {
+.newPostPage { 
     height: 100%;
     display: flex;
   
     .formContainer {
       flex: 3;
       overflow: scroll;
+
+      h1{
+        letter-spacing: 1px;
+      }
   
       .wrapper {
         margin: 30px 50px 100px 0px;
@@ -28,10 +32,15 @@
             }
   
             input {
-              padding: 15px;
+              padding: 10px;
               border-radius: 15px;
-              border: 1px solid rgb(186, 171, 171);
-              font-size: large;
+              border: 2px solid rgb(186, 171, 171);
+              font-size: medium;
+
+              &:focus{
+                  border-color: #007bff;
+                  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+              }
             }
             
   
@@ -46,21 +55,26 @@
   
               .quill > .ql-container > .ql-editor{
                 height: 200px;
-                font-size: 18px;
+                font-size: 17px;
               }
             }
           }
           .sendButton {
             width: 30%;
-            height: 50px;
-            border-radius: 5px;
+            height: 40px;
+            border-radius: 10px;
             border: none;
             margin-top: 30px;
-            font-size: larger;
-            background-color: teal;
-            color: white;
-            font-weight: 400;
+            font-size: large;
+            background-color: #fece51;
+            color: black;
+            font-weight: 600;
             cursor: pointer;
+            letter-spacing: 0.8px;
+          &:hover {
+            background-color: #e5b941;
+            transition: all 1s;
+          }
           }
         }
       }
@@ -82,4 +96,44 @@
         border-radius: 5px;
       }
     }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 750px;
+
+    .formContainer {
+      width: 100%;
+      overflow: visible;
+      margin-bottom: 30px;
+
+      .wrapper {
+        margin: 20px;
+      }
+
+      form {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .item {
+        width: 100% !important;
+      }
+
+      .sendButton {
+        width: 100%;
+        align-items: center;
+      }
+    }
+
+    .sideContainer {
+      width: 100%; 
+      padding: 20px;
+      background-color: #f9f4f4;
+      img {
+        width: 80%;
+      } 
+    }
+  }
   }

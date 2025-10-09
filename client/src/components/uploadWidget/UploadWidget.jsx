@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import './widget.scss'
 
 const CloudinaryScriptContext = createContext();
 

@@ -1,0 +1,16 @@
+.cloudinary-button{
+    padding: 10px 27px;
+    background-color: #fece51;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #000;
+    transition: all 0.3s ease;
+    letter-spacing: 0.8px;
+    
+        &:hover {
+            background-color: #e5b941;
+            transform: translateY(-7px);
+        }
+}
