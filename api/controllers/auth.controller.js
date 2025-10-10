@@ -40,12 +40,10 @@ try {
     }
     const age = 1000 * 60 * 60 * 24 * 7;
     const token = jwt.sign(
-        {
-        id: user.id,
-        isAdmin: false,
-        },
-     process.env.JWT_SECRET_KEY,
-    {expiresIn: age});
+    { id: user.id, isAdmin: false },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "7d" }
+    );
 
     const {password:userPassword, ...userInfo} = user
    
@@ -64,7 +62,14 @@ try {
 
 
 export const logout = (req, res)=>{
-    res.clearCookie("token").status(200).json({
-        message: "Logout successfull!"
+  res
+    .clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
     })
+    .status(200)
+    .json({
+      message: "Logout successful!",
+    });
 }
