@@ -13,14 +13,25 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173", 
+  /\.vercel\.app$/,
+  "https://estate-fullstack.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://estate-fullstack-kdwx9w279-konstantin907s-projects.vercel.app", 
-      "http://localhost:5173"
-    ],
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+
+      if (/\.vercel\.app$/.test(origin)) return callback(null, true);
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
