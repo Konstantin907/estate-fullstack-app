@@ -96,11 +96,14 @@
         .bottom {
           margin-top: 50px;
           color: #262525;
+          display: flex;
+          flex-direction: column;
           line-height: 25px;
           font-size: large;
           column-count: 1 !important;
           column-gap: 0 !important;
           white-space: normal !important;
+          margin-bottom: 100px;
 
             p {
                 column-count: 1 !important;
