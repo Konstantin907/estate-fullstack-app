@@ -66,11 +66,8 @@ export default function Navbar() {
               <Link to="/contact" onClick={() => setOpen(false)}>
                 Contact
               </Link>
-              <Link to="/agents" onClick={() => setOpen(false)}>
-                Agents
-              </Link>
-              <Link to="/profile" className="profile">
-                <button className="profile-btn">Profile</button>
+              <Link to="/profile" onClick={() => setOpen(false)}>
+                Profile
               </Link>
               {!currentUser && (
                 <>
