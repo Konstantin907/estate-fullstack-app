@@ -98,9 +98,16 @@
           color: #262525;
           line-height: 25px;
           font-size: large;
-          column-count: 1;
-          column-gap: 0;
-          white-space: normal;
+          column-count: 1 !important;
+          column-gap: 0 !important;
+          white-space: normal !important;
+
+            p {
+                column-count: 1 !important;
+                column-gap: 0 !important;
+                white-space: normal !important;
+                display: block !important;
+              }
         }
       }
     }
