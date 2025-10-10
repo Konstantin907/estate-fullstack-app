@@ -24,7 +24,6 @@ export default function Navbar() {
       <div className="right">
         {currentUser ? (
           <div className="user">
-            <img src={currentUser.avatar || "/noavatar.png"} alt="avatar" />
             <span>{currentUser.username}</span>
             <Link to="/profile" className="profile">
               <button className="profile-btn">Profile</button>
@@ -69,6 +68,9 @@ export default function Navbar() {
               </Link>
               <Link to="/agents" onClick={() => setOpen(false)}>
                 Agents
+              </Link>
+              <Link to="/profile" className="profile">
+                <button className="profile-btn">Profile</button>
               </Link>
               {!currentUser && (
                 <>
