@@ -8,6 +8,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom'
 import { useEffect } from "react";
 import { motion } from 'framer-motion'
+import NoChatYet from "../../components/noChat/NoChatYet.jsx";
 
   // framer:
   const fadeIn = {
@@ -119,6 +120,7 @@ const handleLogout = async() =>{
             </Await>
           </Suspense>
         </div>
+            {/* chat */}
       </div>
       <motion.div
         className="chatContainer"
@@ -132,7 +134,7 @@ const handleLogout = async() =>{
             <div>
               <h2>Your Chats :</h2>
               {chats.length === 0 ? (
-                <p>No chats yet.</p>
+                <NoChatYet />
               ) : (
                 chats.map((chat) => (
                   <div
