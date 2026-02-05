@@ -46,7 +46,6 @@ function App() {
           element: <Register />,
         },
 
-        // 🔐 ZAŠTIĆENE RUTE
         {
           element: <RequireAuth />,
           children: [
