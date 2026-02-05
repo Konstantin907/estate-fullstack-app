@@ -27,7 +27,8 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     padding-right: 25px;
     margin-top: 40px;
 
