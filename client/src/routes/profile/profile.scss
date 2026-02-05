@@ -118,8 +118,7 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
-
-  position: static;
+  position: relative;
   top: 40px;
 
   &:hover {
@@ -212,6 +211,53 @@
     }
   }
 }
+// NEWWWWWWWWWW
+.allPosts {
+  margin-top: 40px;
+  .allPostsHeading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+}
+
+// saved posts
+.savedPosts {
+  margin-top: 80px;
+  padding-bottom: 120px; // da se sigurno vidi i ne odsiječe
+
+  width: 100%;
+
+  .savedHeading {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #222;
+  }
+
+  @include md {
+    margin-top: 60px;
+    padding-bottom: 80px;
+
+    .savedHeading {
+      font-size: 26px;
+      text-align: center;
+    }
+  }
+
+  @include sm {
+    margin-top: 50px;
+    padding-bottom: 60px;
+
+    .savedHeading {
+      font-size: 22px;
+      text-align: center;
+    }
+  }
+}
+
+
+
 // chat
 
 .chatContainer {
