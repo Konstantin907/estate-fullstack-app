@@ -63,8 +63,8 @@ useEffect(() => {
 useEffect(() => {
   const fetchSavedPosts = async () => {
     try {
-      const res = await apiRequest.get("/users/savedPosts");
-      setSavedPosts(res.data);
+      const res = await apiRequest.get("/users/profilePosts");
+      setSavedPosts(res.data.savedPosts ?? []);
     } catch (err) {
       console.error("Saved posts fetch failed", err);
     }
