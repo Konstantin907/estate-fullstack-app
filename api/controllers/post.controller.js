@@ -43,7 +43,7 @@ export const getPosts = async (req, res) => {
 //single post:
 
 export const getPost = async (req, res) => {
-  const {id} = req.params.id;
+  const { id } = req.params;
 
   try {
     const post = await prisma.post.findUnique({
