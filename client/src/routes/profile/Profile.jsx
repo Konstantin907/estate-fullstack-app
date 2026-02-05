@@ -30,8 +30,9 @@ function ProfilePage() {
 
   const [selectedChatId, setSelectedChatId] = useState(null);
   const [chats, setChats] = useState([]);
-
-// chat get:
+  const [allPosts, setAllPosts] = useState([]);
+  
+  // chat get:
 useEffect(()=> {
   const getChats = async() => {
     try {
@@ -45,6 +46,20 @@ useEffect(()=> {
   getChats();
 },[])
 
+useEffect(() => {
+  const fetchAllPosts = async () => {
+    try {
+      const res = await apiRequest.get("/posts/all");
+      setAllPosts(res.data);
+    } catch (err) {
+      console.error("All posts fetch failed", err);
+    }
+  };
+
+  fetchAllPosts();
+}, []);
+
+
 const handleLogout = async() =>{
   try {
     await apiRequest.post('/auth/logout');
@@ -53,8 +68,8 @@ const handleLogout = async() =>{
   } catch (error) {
     console.log(error);
   }
-
 }
+
   return (
     <div className="profilePage">
       <div className="userInfo">
@@ -66,16 +81,14 @@ const handleLogout = async() =>{
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <div className="textHeading">
-           Welcome in,{" "}
-          {currentUser.username.charAt(0).toUpperCase() +
-            currentUser.username.slice(1)}
-          !
-
-           <Link to="/add" className="addNew">
-            <button className="addBtn">New Post</button>
-          </Link>
+            Welcome in,{" "}
+            {currentUser.username.charAt(0).toUpperCase() +
+              currentUser.username.slice(1)}
+            !
+            <Link to="/add" className="addNew">
+              <button className="addBtn">New Post</button>
+            </Link>
           </div>
-
         </motion.div>
         <motion.div
           className="profileCard"
@@ -108,19 +121,14 @@ const handleLogout = async() =>{
             </div>
           </div>
         </motion.div>
-        {/* Saved Posts Section */}
-        <div className="savedPosts">
-          <h2 className="savedHeading">Saved Posts</h2>
-          <Suspense fallback={<p>Loading...</p>}>
-            <Await
-              resolve={data.postResponse}
-              errorElement={<p>Error loading posts!</p>}
-            >
-              {(postResponse) => <List posts={postResponse.data.savedPosts} />}
-            </Await>
-          </Suspense>
+
+        {/* all posts  */}
+        <div className="allPosts">
+          <h2 className="allPostsHeading">All Posts</h2>
+          <List posts={allPosts} />
         </div>
-            {/* chat */}
+
+        {/* chat */}
       </div>
       <motion.div
         className="chatContainer"

@@ -2,6 +2,17 @@ import prisma from '../lib/prisma.js'
 import jwt from "jsonwebtoken";
 
 
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany({});
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Failed to get all posts' });
+  }
+}
+
+
 export const getPosts = async (req, res) => {
     const query = req.query;
   
@@ -27,12 +38,17 @@ export const getPosts = async (req, res) => {
       res.status(500).json({ message: 'Failed to get posts' });
     }
   };
-  
+
 
 //single post:
 
 export const getPost = async (req, res) => {
-  const id = req.params.id;
+  const {id} = req.params.id;
+
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid post id" });
+  }
   try {
     const post = await prisma.post.findUnique({
       where: { id },
