@@ -31,6 +31,7 @@ function ProfilePage() {
   const [selectedChatId, setSelectedChatId] = useState(null);
   const [chats, setChats] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   
   // chat get:
 useEffect(()=> {
@@ -57,6 +58,19 @@ useEffect(() => {
   };
 
   fetchAllPosts();
+}, []);
+
+useEffect(() => {
+  const fetchSavedPosts = async () => {
+    try {
+      const res = await apiRequest.get("/users/savedPosts");
+      setSavedPosts(res.data);
+    } catch (err) {
+      console.error("Saved posts fetch failed", err);
+    }
+  };
+
+  fetchSavedPosts();
 }, []);
 
 
@@ -126,6 +140,17 @@ const handleLogout = async() =>{
         <div className="allPosts">
           <h2 className="allPostsHeading">All Posts</h2>
           <List posts={allPosts} />
+        </div>
+
+        {/* saved post */}
+        <div className="savedPosts">
+          <h2 className="savedHeading">Saved Posts</h2>
+
+          {savedPosts.length === 0 ? (
+            <p style={{ opacity: 0.6 }}>You have no saved posts yet.</p>
+          ) : (
+            <List posts={savedPosts} />
+          )}
         </div>
 
         {/* chat */}
